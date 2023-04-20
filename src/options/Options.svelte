@@ -31,6 +31,8 @@
 </script>
 
 <main>
+  <img src="img/logo.png" alt="MitID Logo" />
+
   <h3>MitID Push</h3>
 
   {#await notificationTokenPromise}
@@ -41,7 +43,8 @@
     <button on:click={testNotification}>Test</button>
 
     <p>
-      In your <a href="https://ntfy.sh" target="_blank" rel="noopener">ntfy</a> app, add a new subscription using the token above as the topic name.
+      <strong>Instructions:</strong>
+      Download the <a href="https://ntfy.sh" target="_blank" rel="noopener">ntfy</a> app on your phone, then add a new subscription using the token above as the topic name.
     </p>
   {/await}
 
@@ -65,6 +68,11 @@
     font-weight: bold;
     line-height: 1.2rem;
     margin: 2rem auto;
+  }
+
+  img {
+    width: 6rem;
+    height: 6rem;
   }
 
   input {
