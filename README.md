@@ -1,6 +1,8 @@
 # mitid-push
 
-> a chrome extension tools built with Vite + Svelte, and Manifest v3
+A small Chrome Extension that monitors when MitID is waiting for you to approve a login, then uses [ntfy.sh](https://ntfy.sh/) to send a notification to your phone for easier approvals.
+
+Tested on iOS only for now.
 
 ## Installing
 
