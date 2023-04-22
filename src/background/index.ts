@@ -1,7 +1,8 @@
 console.info('chrome-ext template-svelte-ts background script')
 
 // Find if there's a notification token stored in the chrome extension storage
-chrome.storage.local.get(['notificationToken'], (result) => {
+// Also, set the endpoint to a default value if it's not already set
+chrome.storage.local.get(['notificationToken', 'endpoint'], (result) => {
   if (!result.notificationToken) {
     console.log('No token found, creating one');
 
@@ -11,6 +12,14 @@ chrome.storage.local.get(['notificationToken'], (result) => {
       console.log('Token created');
     });
   }
+
+  if (!result.endpoint) {
+    console.log('No endpoint found, setting default');
+
+    chrome.storage.local.set({ endpoint: 'https://ntfy.sh' }, () => {
+      console.log('Endpoint set to default');
+    });
+  }
 });
 
 // Listen for the "waiting-for-approval" message from the content script
@@ -18,11 +27,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'waiting-for-approval') {
     console.log('Received waiting-for-approval message');
 
-    chrome.storage.local.get(['notificationToken'], async (result) => {
-      if (result.notificationToken) {
+    chrome.storage.local.get(['notificationToken', 'endpoint'], async ({ notificationToken, endpoint }) => {
+      if (notificationToken && endpoint) {
 
         // POST to ntfy.sh
-        await fetch(`https://ntfy.sh/${result.notificationToken}`, {
+        await fetch(`${endpoint}/${notificationToken}`, {
           method: 'POST',
           headers: {
             'Title': 'MitID Push',
